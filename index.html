@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<style>
+			.container { }
+		</style>
+		<script src='js/BaseLibrary.js'></script>
+		<script src="js/UserStoryController.js"></script>
+		<script>
+			// =========
+			// Variables
+			// =========
+			var user = {
+				loggedin : true
+			};
+
+			// =========
+			// Controller
+			// =========
+			var Controller = function() {
+				// Define userStories
+				this.defineStoryWhereA("loggedInUser").wantsTo("draw");
+				this.defineConditionForUserType("loggedInUser", function() {
+					return !!user.loggedin;
+				})
+			}
+			Controller.prototype = new UserStoryController();
+
+			// =========
+			// Possible actions for this router
+			// =========
+			Controller.prototype.draw = function(userTypes) {
+				console.log("The user is drawing!");
+			}
+
+			// Create controller
+			var c = new Controller();
+
+			// =========
+			// Callbacks
+			// =========
+			c.did("draw", function(intent) {
+				console.log("draw was executed!");
+			})
+			c.didnt("draw", function(intent) {
+				console.log("draw was not executed!");
+			})
+
+			// =========
+			// TESTING : Try to execute intent under different circumstances
+			// =========
+			console.log("drawing allowed");
+			c.do("draw");
+
+			// Set loggedin to false. Draw should not be executed
+			console.log("drawing not allowed");
+			user.loggedin = false;
+			c.do("draw");
+
+			// Set alternative user story for "draw" intent
+			c.defineStoryWhereA("anyUser").wantsTo("draw");
+			console.log("drawing allowed in alternative user story");
+			c.do("draw");
+
+			// Extra condition on "anyUser"
+			c.defineConditionForUserType("anyUser", function() { return false; });
+			console.log("drawing not allowed due to extra condition");
+			c.do("draw");
+
+		</script>
+	</head>
+	<body>
+		<div class='container'>
+			
+		</div>
+		<script>
+			// Analytics
+		</script>
+	</body>
+</html>
