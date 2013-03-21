@@ -22,7 +22,7 @@ function UserStoryController() {
 				var userTypes = this.userTypesForIntent[intent];
 				if (userTypes) {
 					// Check if all conditions for a userType are met
-					// If so, the intent 
+					// If so, indicate that this userType can access this intent
 					for(userTypeIndex in userTypes) {
 						if (userTypes.hasOwnProperty(userTypeIndex)) {
 							var userType = userTypes[userTypeIndex];
